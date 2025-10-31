@@ -43,4 +43,10 @@ config.seed = 2048
 config.num_workers = 2
 
 # WandB logging (optional)
-config.using_wandb = False
+config.using_wandb = True
+config.wandb_key = "Secret"
+config.wandb_entity = "hunchoquavodb"
+config.wandb_project = "fine_tune_arcface_ndtwin_r100"
+config.wandb_log_all = False
+config.save_artifacts = False
+config.suffix_run_name = 'bs32_lr0.01_epoch30_warmup2'

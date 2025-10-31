@@ -44,7 +44,7 @@ config.num_workers = 2
 
 # WandB logging (optional)
 config.using_wandb = True
-config.wandb_key = "Secret"
+config.wandb_key = None
 config.wandb_entity = "hunchoquavodb"
 config.wandb_project = "fine_tune_arcface_ndtwin_r100"
 config.wandb_log_all = False

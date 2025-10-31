@@ -74,7 +74,10 @@ def main(args):
         import wandb
         # Sign in to wandb
         try:
-            wandb.login(key=cfg.wandb_key)
+            if cfg.wandb_key is None or cfg.wandb_key == "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX":
+                wandb.login()  # Will automatically use WANDB_API_KEY from environment
+            else:
+                wandb.login(key=cfg.wandb_key)
         except Exception as e:
             print("WandB Key must be provided in config file (base.py).")
             print(f"Config Error: {e}")

@@ -4,11 +4,11 @@ FACE VERIFICATION MODEL COMPARISON
 
 [1/2] Evaluating ORIGINAL model...
 --------------------------------------------------------------------------------
-Loading model from: /kaggle/input/nd-twin-448-train/ms1mv3_arcface_r100_fp16.pth
+Loading model from: /input/nd-twin-448-train/ms1mv3_arcface_r100_fp16.pth
 Model loaded successfully on cuda
-Loaded 1554 valid pairs from /kaggle/input/nd-twin-448-train/test_pairs.txt
+Loaded 1554 valid pairs from /input/nd-twin-448-train/test_pairs.txt
 Processing 1554 pairs...
-Computing embeddings:   0%|                              | 0/25 [00:00<?, ?it/s]/kaggle/working/ArcFace/backbones/iresnet.py:149: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+Computing embeddings:   0%|                              | 0/25 [00:00<?, ?it/s]/working/ArcFace/backbones/iresnet.py:149: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
   with torch.cuda.amp.autocast(self.fp16):
 Computing embeddings: 100%|█████████████████████| 25/25 [00:20<00:00,  1.22it/s]
 
@@ -40,10 +40,10 @@ Successfully processed 1554 pairs
 
 [2/2] Evaluating FINE-TUNED model...
 --------------------------------------------------------------------------------
-Loading model from: /kaggle/input/nd-twin-448-train/ms1mv3_arcface_r100_fp16_fine_tune_ndtwin.pt
+Loading model from: /input/nd-twin-448-train/ms1mv3_arcface_r100_fp16_fine_tune_ndtwin.pt
 Model loaded successfully on cuda
 Processing 1554 pairs...
-Computing embeddings:   0%|                              | 0/25 [00:00<?, ?it/s]/kaggle/working/ArcFace/backbones/iresnet.py:149: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+Computing embeddings:   0%|                              | 0/25 [00:00<?, ?it/s]/working/ArcFace/backbones/iresnet.py:149: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
   with torch.cuda.amp.autocast(self.fp16):
 Computing embeddings: 100%|█████████████████████| 25/25 [00:20<00:00,  1.20it/s]
 

@@ -14,9 +14,9 @@ config.interclass_filtering_threshold = 0
 
 # Training settings
 config.fp16 = True  # Match your pretrained model
-config.batch_size = 200  # Adjust based on your GPU memory (start smaller)
+config.batch_size = 32  # Adjust based on your GPU memory (start smaller)
 config.optimizer = "sgd"
-config.lr = 0.001  # Lower learning rate for fine-tuning
+config.lr = 0.01  # Lower learning rate for fine-tuning
 config.momentum = 0.9
 config.weight_decay = 5e-4
 config.pretrained_path = "/kaggle/input/nd-twin-448-train/ms1mv3_arcface_r100_fp16.pth"
@@ -28,8 +28,8 @@ config.sample_rate = 1.0
 config.rec = "/kaggle/input/nd-twin-448-train/ND_TWIN_448_TRAIN"  # Path to your dataset folder or .rec file
 config.num_classes = 377  # Count of unique people
 config.num_image = 6734  # Total number of images
-config.num_epoch = 10
-config.warmup_epoch = 0
+config.num_epoch = 30
+config.warmup_epoch = 2
 
 # Validation (optional - comment out if you don't have validation sets)
 config.val_targets = []

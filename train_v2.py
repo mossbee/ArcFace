@@ -64,14 +64,10 @@ def main(args):
     os.makedirs(cfg.output, exist_ok=True)
     init_logging(rank, cfg.output)
 
-    summary_writer = (
-        SummaryWriter(log_dir=os.path.join(cfg.output, "tensorboard"))
-        if TENSORBOARD_AVAILABLE and rank == 0:
-            summary_writer = SummaryWriter(log_dir=os.path.join(cfg.output, "tensorboard"))
-        else:
-            summary_writer = None
-        else None
-    )
+    if TENSORBOARD_AVAILABLE and rank == 0:
+        summary_writer = SummaryWriter(log_dir=os.path.join(cfg.output, "tensorboard"))
+    else:
+        summary_writer = None
     
     wandb_logger = None
     if cfg.using_wandb:

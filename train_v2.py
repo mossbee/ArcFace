@@ -153,6 +153,12 @@ def main(args):
         opt.load_state_dict(dict_checkpoint["state_optimizer"])
         lr_scheduler.load_state_dict(dict_checkpoint["state_lr_scheduler"])
         del dict_checkpoint
+    else:
+        # Load pretrained weights for fine-tuning
+        pretrained_path = cfg.pretrained_path
+        if os.path.exists(pretrained_path):
+            backbone.module.load_state_dict(torch.load(pretrained_path))
+            logging.info(f"Loaded pretrained weights from {pretrained_path}")
 
     for key, value in cfg.items():
         num_space = 25 - len(key)

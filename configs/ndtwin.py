@@ -32,7 +32,7 @@ config.num_epoch = 20
 config.warmup_epoch = 0
 
 # Validation (optional - comment out if you don't have validation sets)
-# config.val_targets = ['lfw', 'cfp_fp', "agedb_30"]
+config.val_targets = []
 
 # Training settings
 config.verbose = 2000

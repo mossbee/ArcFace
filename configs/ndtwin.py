@@ -14,7 +14,7 @@ config.interclass_filtering_threshold = 0
 
 # Training settings
 config.fp16 = True  # Match your pretrained model
-config.batch_size = 64  # Adjust based on your GPU memory (start smaller)
+config.batch_size = 32  # Adjust based on your GPU memory (start smaller)
 config.optimizer = "sgd"
 config.lr = 0.01  # Lower learning rate for fine-tuning
 config.momentum = 0.9

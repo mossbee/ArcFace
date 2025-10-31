@@ -7,7 +7,12 @@ import torch
 
 from eval import verification
 from utils.utils_logging import AverageMeter
-from torch.utils.tensorboard import SummaryWriter
+try:
+    from torch.utils.tensorboard import SummaryWriter
+except (ImportError, AttributeError, Exception):
+    # Dummy class if tensorboard is not available
+    class SummaryWriter:
+        def add_scalar(self, *args, **kwargs): pass
 from torch import distributed
 
 
@@ -32,9 +37,9 @@ class CallBackVerification(object):
                 self.ver_list[i], backbone, 10, 10)
             logging.info('[%s][%d]XNorm: %f' % (self.ver_name_list[i], global_step, xnorm))
             logging.info('[%s][%d]Accuracy-Flip: %1.5f+-%1.5f' % (self.ver_name_list[i], global_step, acc2, std2))
+            if self.summary_writer is not None:
+                self.summary_writer.add_scalar(tag=self.ver_name_list[i], scalar_value=acc2, global_step=global_step)
 
-            self.summary_writer: SummaryWriter
-            self.summary_writer.add_scalar(tag=self.ver_name_list[i], scalar_value=acc2, global_step=global_step, )
             if self.wandb_logger:
                 import wandb
                 self.wandb_logger.log({

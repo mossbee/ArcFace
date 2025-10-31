@@ -42,6 +42,7 @@ def get_dataloader(
     # Image Folder
     else:
         transform = transforms.Compose([
+             transforms.Resize((112, 112)),
              transforms.RandomHorizontalFlip(),
              transforms.ToTensor(),
              transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),

@@ -15,9 +15,17 @@ from torch.utils.data import DataLoader
 try:
     from torch.utils.tensorboard import SummaryWriter
     TENSORBOARD_AVAILABLE = True
-except ImportError:
+except (ImportError, AttributeError, Exception) as e:
     TENSORBOARD_AVAILABLE = False
-    print("TensorBoard not available, logging to file only")
+    print(f"TensorBoard not available, logging to file only. Error: {type(e).__name__}")
+    # Create a dummy SummaryWriter class
+    class SummaryWriter:
+        def __init__(self, *args, **kwargs):
+            pass
+        def add_scalar(self, *args, **kwargs):
+            pass
+        def close(self, *args, **kwargs):
+            pass
 from utils.utils_callbacks import CallBackLogging, CallBackVerification
 from utils.utils_config import get_config
 from utils.utils_distributed_sampler import setup_seed
@@ -58,7 +66,10 @@ def main(args):
 
     summary_writer = (
         SummaryWriter(log_dir=os.path.join(cfg.output, "tensorboard"))
-        if rank == 0 and TENSORBOARD_AVAILABLE
+        if TENSORBOARD_AVAILABLE and rank == 0:
+            summary_writer = SummaryWriter(log_dir=os.path.join(cfg.output, "tensorboard"))
+        else:
+            summary_writer = None
         else None
     )
     

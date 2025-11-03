@@ -206,32 +206,72 @@ def evaluate_verification(embeddings1, embeddings2, issame_list, nrof_folds=10):
     # Concatenate for evaluation
     embeddings = np.concatenate([embeddings1_norm, embeddings2_norm], axis=0)
     
-    # Run evaluation
-    tpr, fpr, accuracy, val, val_std, far = evaluate(
-        embeddings, issame_list, nrof_folds=nrof_folds
-    )
+    # Run evaluation with error handling for interpolation issues
+    try:
+        tpr, fpr, accuracy, val, val_std, far = evaluate(
+            embeddings, issame_list, nrof_folds=nrof_folds
+        )
+        
+        # Calculate metrics
+        acc_mean = np.mean(accuracy)
+        acc_std = np.std(accuracy)
+        
+        print(f"\n{'='*60}")
+        print(f"Verification Results:")
+        print(f"{'='*60}")
+        print(f"Accuracy: {acc_mean:.4f} ± {acc_std:.4f}")
+        print(f"Validation Rate @ FAR=1e-3: {val:.4f} ± {val_std:.4f}")
+        print(f"False Accept Rate: {far:.6f}")
+        print(f"{'='*60}")
+        
+        return {
+            'accuracy': acc_mean,
+            'accuracy_std': acc_std,
+            'val': val,
+            'val_std': val_std,
+            'far': far,
+            'tpr': tpr,
+            'fpr': fpr
+        }
     
-    # Calculate metrics
-    acc_mean = np.mean(accuracy)
-    acc_std = np.std(accuracy)
-    
-    print(f"\n{'='*60}")
-    print(f"Verification Results:")
-    print(f"{'='*60}")
-    print(f"Accuracy: {acc_mean:.4f} ± {acc_std:.4f}")
-    print(f"Validation Rate @ FAR=1e-3: {val:.4f} ± {val_std:.4f}")
-    print(f"False Accept Rate: {far:.6f}")
-    print(f"{'='*60}")
-    
-    return {
-        'accuracy': acc_mean,
-        'accuracy_std': acc_std,
-        'val': val,
-        'val_std': val_std,
-        'far': far,
-        'tpr': tpr,
-        'fpr': fpr
-    }
+    except ValueError as e:
+        if "duplicates" in str(e):
+            print(f"\nWarning: Interpolation failed due to duplicate FAR values.")
+            print("Falling back to simplified evaluation (accuracy only)...")
+            
+            # Simple accuracy calculation
+            from eval.verification import calculate_roc
+            thresholds = np.arange(0, 4, 0.01)
+            tpr, fpr, accuracy = calculate_roc(
+                thresholds,
+                embeddings1_norm,
+                embeddings2_norm,
+                np.asarray(issame_list),
+                nrof_folds=nrof_folds,
+                pca=0
+            )
+            
+            acc_mean = np.mean(accuracy)
+            acc_std = np.std(accuracy)
+            
+            print(f"\n{'='*60}")
+            print(f"Verification Results (Simplified):")
+            print(f"{'='*60}")
+            print(f"Accuracy: {acc_mean:.4f} ± {acc_std:.4f}")
+            print(f"Note: VAL@FAR calculation skipped due to data characteristics")
+            print(f"{'='*60}")
+            
+            return {
+                'accuracy': acc_mean,
+                'accuracy_std': acc_std,
+                'val': None,
+                'val_std': None,
+                'far': None,
+                'tpr': tpr,
+                'fpr': fpr
+            }
+        else:
+            raise
 
 
 def main():

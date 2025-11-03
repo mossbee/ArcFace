@@ -164,8 +164,8 @@ def extract_embeddings(model, pairs, dataset_root, batch_size=32, device='cuda')
         batch_imgs2 = torch.stack(batch_imgs2).to(device)
         
         # Extract features
-        feats1 = model(batch_imgs1).cpu().numpy()
-        feats2 = model(batch_imgs2).cpu().numpy()
+        feats1 = model(batch_imgs1).detach().cpu().numpy()
+        feats2 = model(batch_imgs2).detach().cpu().numpy()
         
         embeddings1.append(feats1)
         embeddings2.append(feats2)
@@ -277,3 +277,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
